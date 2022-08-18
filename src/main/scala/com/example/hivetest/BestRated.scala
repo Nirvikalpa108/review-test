@@ -12,21 +12,26 @@ trait BestRated[F[_]]{
 }
 
 object BestRated {
-  def impl[F[_] : Sync : Files]: BestRated[F] = new BestRated[F] {
+  def impl[F[_]: Sync : Files]: BestRated[F] = new BestRated[F] {
     def getBestRated(search: Search, filePath: String): Stream[F, Result] = {
+//      Files[F].readAll(Path(filePath))
+//        .through(text.utf8.decode)
+//        .through(text.lines)
+//        .through(stringStreamParser)
+//        .through(decoder[F, Review])
+//        .filter(review => isWithinTimePeriod(search.start, search.end, review.unixReviewTime))
+//        .foldMap(aggregateReviews)
+//        .filter(_.reviews._2.size < search.minNumberReviews)
+//        .map(getReviewAverage)
+//        .take(search.limit.toLong)
+//      //TODO sort Stream by average rating before calling .take
+
       Files[F].readAll(Path(filePath))
         .through(text.utf8.decode)
         .through(text.lines)
         .through(stringStreamParser)
         .through(decoder[F, Review])
-        .filter(review => isWithinTimePeriod(search.start, search.end, review.unixReviewTime))
-        .foldMap(aggregateReviews)
-        .filter(_.reviews._2.size < search.minNumberReviews)
-        .map(getReviewAverage)
-        .take(search.limit.toLong)
-      //TODO sort Stream by average rating before calling .take
-
-      //Stream.eval(Sync[F].delay {println("testing testing 123"); Result("TEST", 2.0)})
+        .map(review => Result(review.asin, review.overall))
     }
   }
 }

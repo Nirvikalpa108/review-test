@@ -18,7 +18,7 @@ object Search {
   implicit def searchEntityDecoder[F[_] : Concurrent]: EntityDecoder[F, Search] = jsonOf[F, Search]
 }
 
-case class Review(asin: String, helpful: List[Int], overall: Double, reviewText: String, reviewerId: String, reviewerName: String, summary: String, unixReviewTime: Long)
+case class Review(asin: String, helpful: List[Int], overall: Double, reviewText: String, reviewerID: String, reviewerName: Option[String], summary: String, unixReviewTime: Long)
 object Review {
   implicit val reviewDecoder: Decoder[Review] = deriveDecoder[Review]
 }
