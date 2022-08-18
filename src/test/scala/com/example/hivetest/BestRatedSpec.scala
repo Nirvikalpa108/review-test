@@ -16,8 +16,9 @@ class BestRatedSpec extends CatsEffectSuite {
   }
 
   private[this] val BestRatedTest: IO[Response[IO]] = {
-    val postBR = Request[IO](Method.POST, uri"/test2")
+    val requestBody: EntityBody[IO] = ???
+    val postBR = Request[IO](Method.POST, uri"/amazon/best-rated", body = requestBody)
     val bestRated = BestRated.impl[IO]
-    Routes.bestRatedRoutes(bestRated, "file").orNotFound(postBR)
+    Routes.bestRatedRoutes(bestRated, "src/main/resources/sample.txt").orNotFound(postBR)
   }
 }

@@ -8,7 +8,4 @@ object Utils {
   def aggregateReviews(review: Review): ProductReview = ???
 
   def getReviewAverage(prodReview: ProductReview): Result = ???
-
-  // TODO do I need to write my own sorting function for the stream?
-  def sortByRating(result: Result): Result = ???
 }
